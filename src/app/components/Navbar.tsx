@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
+import localFont from "next/font/local";
 import {
   Menu,
   X,
@@ -17,6 +18,11 @@ import {
   Mail,
   Sparkles,
 } from "lucide-react";
+
+const aristotelica = localFont({
+  src: "../fonts/Aristotelica.ttf",
+  variable: "--font-aristotelica",
+});
 
 const links = [
   { name: "home", icon: House },
@@ -671,7 +677,7 @@ export default function Navbar() {
               className="shrink-0"
             />
 
-            <span className="min-w-0 whitespace-normal wrap-break-word text-[16px] text-black dark:text-white">
+            <span className={`min-w-0 whitespace-normal wrap-break-word text-[18px] text-black dark:text-white ${aristotelica.className}`}>
               yuan visuals
             </span>
           </button>
@@ -751,7 +757,7 @@ export default function Navbar() {
             className="shrink-0"
           />
 
-          <span className="shrink-0 text-[16px] text-black dark:text-white">
+          <span className={`shrink-0 text-[16px] text-black dark:text-white ${aristotelica.className}`}>
             yuan visuals
           </span>
         </button>
@@ -813,7 +819,7 @@ export default function Navbar() {
               className="shrink-0"
             />
 
-            <span className="shrink-0 text-[16px] text-black dark:text-white">
+            <span className={`shrink-0 text-[16px] text-black dark:text-white ${aristotelica.className}`}>
               yuan visuals
             </span>
           </button>
