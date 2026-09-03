@@ -5,7 +5,7 @@ import localFont from "next/font/local";
 import { useEffect, useRef } from "react";
 
 const gasdrifo = localFont({
-  src: "../fonts/gasdrifo.ttf",
+  src: "../fonts/Gasdrifo.ttf",
   variable: "--font-gasdrifo",
 });
 
