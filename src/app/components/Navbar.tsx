@@ -18,6 +18,7 @@ import {
   Mail,
   Sparkles,
 } from "lucide-react";
+import { supabase } from "@/lib/supabase";
 
 const aristotelica = localFont({
   src: "../fonts/Aristotelica.ttf",
@@ -361,7 +362,6 @@ export default function Navbar() {
 
   // Active viewer count
   useEffect(() => {
-    const viewersKey = "yuan-visuals-active-viewers";
     const sessionKey = "yuan-visuals-viewer-session";
     const heartbeatInterval = 10000;
     const activeWindow = 25000;
@@ -378,102 +378,63 @@ export default function Navbar() {
       sessionStorage.setItem(sessionKey, sessionId);
     }
 
-    const updateViewers = () => {
+    const updateViewer = async () => {
       try {
-        const stored = localStorage.getItem(viewersKey);
+        const now = new Date().toISOString();
 
-        const viewers: Record<string, number> = stored
-          ? JSON.parse(stored)
-          : {};
+        const { error } = await supabase
+          .from("active_viewers")
+          .upsert(
+            {
+              session_id: sessionId,
+              last_seen: now,
+            },
+            {
+              onConflict: "session_id",
+            }
+          );
 
-        const now = Date.now();
+        if (error) {
+          console.error("Failed to update viewer:", error);
+          return;
+        }
 
-        viewers[sessionId!] = now;
+        const cutoff = new Date(
+          Date.now() - activeWindow
+        ).toISOString();
 
-        Object.keys(viewers).forEach((id) => {
-          if (now - viewers[id] > activeWindow) {
-            delete viewers[id];
-          }
-        });
+        const { count, error: countError } = await supabase
+          .from("active_viewers")
+          .select("*", {
+            count: "exact",
+            head: true,
+          })
+          .gte("last_seen", cutoff);
 
-        localStorage.setItem(
-          viewersKey,
-          JSON.stringify(viewers)
-        );
+        if (countError) {
+          console.error(
+            "Failed to count viewers:",
+            countError
+          );
+          return;
+        }
 
-        setActiveViewers(
-          Math.max(1, Object.keys(viewers).length)
-        );
-      } catch {
+        setActiveViewers(Math.max(1, count ?? 0));
+      } catch (error) {
+        console.error("Viewer tracking error:", error);
         setActiveViewers(1);
       }
     };
 
-    updateViewers();
+    updateViewer();
 
     const interval = window.setInterval(
-      updateViewers,
+      updateViewer,
       heartbeatInterval
     );
 
-    const handleStorage = (event: StorageEvent) => {
-      if (event.key !== viewersKey) {
-        return;
-      }
-
-      try {
-        const stored = event.newValue;
-
-        const viewers: Record<string, number> = stored
-          ? JSON.parse(stored)
-          : {};
-
-        const now = Date.now();
-
-        Object.keys(viewers).forEach((id) => {
-          if (now - viewers[id] > activeWindow) {
-            delete viewers[id];
-          }
-        });
-
-        setActiveViewers(
-          Math.max(1, Object.keys(viewers).length)
-        );
-      } catch {
-        setActiveViewers(1);
-      }
-    };
-
-    window.addEventListener("storage", handleStorage);
-
-    const removeSession = () => {
-      try {
-        const stored = localStorage.getItem(viewersKey);
-
-        const viewers: Record<string, number> = stored
-          ? JSON.parse(stored)
-          : {};
-
-        delete viewers[sessionId!];
-
-        localStorage.setItem(
-          viewersKey,
-          JSON.stringify(viewers)
-        );
-      } catch {
-        // Ignore storage cleanup errors.
-      }
-    };
-
-    window.addEventListener("beforeunload", removeSession);
-
     return () => {
       window.clearInterval(interval);
-      window.removeEventListener("storage", handleStorage);
-      window.removeEventListener(
-        "beforeunload",
-        removeSession
-      );
     };
   }, []);
 
