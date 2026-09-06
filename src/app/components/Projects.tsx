@@ -24,14 +24,6 @@ const projects: Record<string, ProjectItem[]> = {
     { title: "", image: "/graphic-designs/Rice-meals.png" },
     { title: "", image: "/graphic-designs/Drinks.png" },
     { title: "", image: "/graphic-designs/HOPromo-Poster.png" },
-    { title: "", image: "/graphic-designs/Slaughter.png" },
-    { title: "", image: "/graphic-designs/DJGIANC.png" },
-    { title: "", image: "/graphic-designs/SGA.png" },
-    { title: "", image: "/graphic-designs/Lalisa.png" },
-    { title: "", image: "/graphic-designs/MedusaxLilith.png" },
-    { title: "", image: "/graphic-designs/Insecurity.png" },
-    { title: "", image: "/graphic-designs/Edwards.png" },
-    { title: "", image: "/graphic-designs/RentConnect.jpg" },
   ],
 
   illustrator: [
@@ -40,9 +32,6 @@ const projects: Record<string, ProjectItem[]> = {
     { title: "", image: "/graphic-designs/YV.png" },
     { title: "", image: "/graphic-designs/bubble-bliss.png" },
     { title: "", image: "/graphic-designs/JTL.png" },
-    { title: "", image: "/graphic-designs/Luffy.png" },
-    { title: "", image: "/graphic-designs/Santa.png" },
-    { title: "", image: "/graphic-designs/HO-signage.png" },
   ],
 
   videos: [
@@ -100,7 +89,8 @@ function ProjectCard({
             src={project.image}
             alt={`${category.label} project`}
             fill
-            loading="eager"
+            priority={category.id === "photoshop"}
+            loading={category.id === "photoshop" ? undefined : "lazy"}
             sizes="(max-width: 767px) 75vw, 270px"
             className="object-cover transition-transform duration-500 ease-out group-hover/front:scale-[1.04]"
           />
@@ -190,7 +180,10 @@ function ProjectStack({
 }) {
   const items = projects[category.id];
 
-  /* Only five cards are displayed in the visual stack. */
+  /*
+   * Only five cards are rendered for each stack.
+   * Images beyond the first five are not mounted in the DOM.
+   */
   const stackItems = items.slice(0, 5);
 
   return (
@@ -302,7 +295,7 @@ function ProjectStack({
 
         {/* DOTS */}
         <div className="flex items-center gap-1.5">
-          {items.slice(0, 5).map((_, index) => (
+          {stackItems.map((_, index) => (
             <span
               key={`${category.id}-dot-${index}`}
               className={`h-1 w-1 rounded-full ${
@@ -370,7 +363,7 @@ export default function Projects() {
 
         {/* ---------------------------------------------------------------- */}
         {/* PROJECT GRID                                                       */}
-        {/* ---------------------------------------------------------------- */}
+        {/* ------------------------------------------------------------------ */}
 
         <div className="grid min-w-0 grid-cols-1 gap-16 md:grid-cols-3 md:gap-8 lg:gap-12">
           {categories.map((category, index) => (
@@ -384,7 +377,7 @@ export default function Projects() {
 
         {/* ---------------------------------------------------------------- */}
         {/* BOTTOM LINE                                                        */}
-        {/* ---------------------------------------------------------------- */}
+        {/* ------------------------------------------------------------------ */}
 
         <div className="mt-20 flex items-center gap-4">
           <div className="h-px flex-1 bg-gray-500/15 dark:bg-gray-400/15" />
