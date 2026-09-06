@@ -89,8 +89,7 @@ function ProjectCard({
             src={project.image}
             alt={`${category.label} project`}
             fill
-            priority={category.id === "photoshop"}
-            loading={category.id === "photoshop" ? undefined : "lazy"}
+            priority
             sizes="(max-width: 767px) 75vw, 270px"
             className="object-cover transition-transform duration-500 ease-out group-hover/front:scale-[1.04]"
           />
@@ -322,9 +321,9 @@ export default function Projects() {
       className="flex min-h-screen w-full items-center py-20 lg:ml-55 lg:w-[calc(100%-220px)]"
     >
       <div className="mx-auto w-[calc(100%-3rem)] max-w-5xl">
-        {/* ---------------------------------------------------------------- */}
-        {/* SECTION HEADER                                                     */}
-        {/* ---------------------------------------------------------------- */}
+        {/* ---------------------------------------------------------------- */ }
+        {/* SECTION HEADER                                                     */ }
+        {/* ---------------------------------------------------------------- */ }
 
         <div className="mb-16">
           {/* SMALL SECTION NUMBER */}
@@ -361,8 +360,8 @@ export default function Projects() {
           </div>
         </div>
 
-        {/* ---------------------------------------------------------------- */}
-        {/* PROJECT GRID                                                       */}
+        {/* ---------------------------------------------------------------- */ }
+        {/* PROJECT GRID                                                       */ }
         {/* ------------------------------------------------------------------ */}
 
         <div className="grid min-w-0 grid-cols-1 gap-16 md:grid-cols-3 md:gap-8 lg:gap-12">
@@ -375,8 +374,8 @@ export default function Projects() {
           ))}
         </div>
 
-        {/* ---------------------------------------------------------------- */}
-        {/* BOTTOM LINE                                                        */}
+        {/* ---------------------------------------------------------------- */ }
+        {/* BOTTOM LINE                                                        */ }
         {/* ------------------------------------------------------------------ */}
 
         <div className="mt-20 flex items-center gap-4">
