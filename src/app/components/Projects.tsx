@@ -100,8 +100,8 @@ function ProjectCard({
             src={project.image}
             alt={`${category.label} project`}
             fill
+            loading="eager"
             sizes="(max-width: 767px) 75vw, 270px"
-            quality={75}
             className="object-cover transition-transform duration-500 ease-out group-hover/front:scale-[1.04]"
           />
         )}
@@ -156,8 +156,8 @@ function ProjectCard({
           src={project.image}
           alt=""
           fill
+          loading="lazy"
           sizes="270px"
-          quality={60}
           className="object-cover"
         />
       )}

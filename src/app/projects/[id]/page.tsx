@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
@@ -93,6 +92,57 @@ export default function ProjectPage() {
 
     return () => cancelAnimationFrame(timer);
   }, []);
+
+  /*
+   * PRELOAD IMAGES GRADUALLY
+   */
+  useEffect(() => {
+    if (id === "videos" || !currentProjects) {
+      return;
+    }
+
+    const imageProjects = currentProjects as ImageProject[];
+
+    let index = 0;
+    let cancelled = false;
+
+    const preloadNext = () => {
+      if (cancelled || index >= imageProjects.length) {
+        return;
+      }
+
+      const image = new Image();
+
+      image.src = imageProjects[index].image;
+
+      index += 1;
+
+      image.onload = () => {
+        if (cancelled) {
+          return;
+        }
+
+        setTimeout(preloadNext, 40);
+      };
+
+      image.onerror = () => {
+        if (cancelled) {
+          return;
+        }
+
+        setTimeout(preloadNext, 40);
+      };
+    };
+
+    const startTimer = window.setTimeout(() => {
+      preloadNext();
+    }, 100);
+
+    return () => {
+      cancelled = true;
+      window.clearTimeout(startTimer);
+    };
+  }, [id, currentProjects]);
 
   /*
    * LOCK PAGE SCROLL WHEN MODAL IS OPEN
@@ -643,18 +693,15 @@ function ImageCard({
           dark:shadow-none
         "
       >
-        <Image
+        <img
           src={project.image}
           alt={
             project.title ||
             `${categoryName} visual work`
           }
-          width={1600}
-          height={1600}
-          sizes="(max-width: 640px) 33vw, (max-width: 768px) 25vw, (max-width: 1024px) 20vw, 20vw"
-          loading={index < 3 ? "eager" : "lazy"}
-          priority={index < 3}
-          quality={80}
+          loading={index < 5 ? "eager" : "lazy"}
+          decoding="async"
+          fetchPriority={index < 3 ? "high" : "low"}
           draggable={false}
           className="
             block
@@ -984,14 +1031,12 @@ function ImageModal({
             rounded-lg
           "
         >
-          <Image
+          <img
             src={project.image}
             alt={project.title || "Visual work"}
-            width={2400}
-            height={2400}
-            sizes="96vw"
-            quality={90}
-            priority
+            loading="eager"
+            decoding="async"
+            fetchPriority="high"
             draggable={false}
             className="
               block
