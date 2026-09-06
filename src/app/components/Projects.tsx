@@ -31,7 +31,7 @@ const projects: Record<string, ProjectItem[]> = {
     { title: "", image: "/graphic-designs/MedusaxLilith.png" },
     { title: "", image: "/graphic-designs/Insecurity.png" },
     { title: "", image: "/graphic-designs/Edwards.png" },
-    { title: "", image: "/graphic-designs/RentConnect.png" },
+    { title: "", image: "/graphic-designs/RentConnect.jpg" },
   ],
 
   illustrator: [
@@ -100,8 +100,8 @@ function ProjectCard({
             src={project.image}
             alt={`${category.label} project`}
             fill
-            priority
             sizes="(max-width: 767px) 75vw, 270px"
+            quality={75}
             className="object-cover transition-transform duration-500 ease-out group-hover/front:scale-[1.04]"
           />
         )}
@@ -157,6 +157,7 @@ function ProjectCard({
           alt=""
           fill
           sizes="270px"
+          quality={60}
           className="object-cover"
         />
       )}

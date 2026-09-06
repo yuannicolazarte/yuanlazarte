@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
@@ -34,7 +35,7 @@ const projects = {
     { title: "", image: "/graphic-designs/MedusaxLilith.png" },
     { title: "", image: "/graphic-designs/Insecurity.png" },
     { title: "", image: "/graphic-designs/Edwards.png" },
-    { title: "", image: "/graphic-designs/RentConnect.png" },
+    { title: "", image: "/graphic-designs/RentConnect.jpg" },
   ],
 
   illustrator: [
@@ -92,57 +93,6 @@ export default function ProjectPage() {
 
     return () => cancelAnimationFrame(timer);
   }, []);
-
-  /*
-   * PRELOAD IMAGES GRADUALLY
-   */
-  useEffect(() => {
-    if (id === "videos" || !currentProjects) {
-      return;
-    }
-
-    const imageProjects = currentProjects as ImageProject[];
-
-    let index = 0;
-    let cancelled = false;
-
-    const preloadNext = () => {
-      if (cancelled || index >= imageProjects.length) {
-        return;
-      }
-
-      const image = new Image();
-
-      image.src = imageProjects[index].image;
-
-      index += 1;
-
-      image.onload = () => {
-        if (cancelled) {
-          return;
-        }
-
-        setTimeout(preloadNext, 40);
-      };
-
-      image.onerror = () => {
-        if (cancelled) {
-          return;
-        }
-
-        setTimeout(preloadNext, 40);
-      };
-    };
-
-    const startTimer = window.setTimeout(() => {
-      preloadNext();
-    }, 100);
-
-    return () => {
-      cancelled = true;
-      window.clearTimeout(startTimer);
-    };
-  }, [id, currentProjects]);
 
   /*
    * LOCK PAGE SCROLL WHEN MODAL IS OPEN
@@ -693,15 +643,18 @@ function ImageCard({
           dark:shadow-none
         "
       >
-        <img
+        <Image
           src={project.image}
           alt={
             project.title ||
             `${categoryName} visual work`
           }
-          loading={index < 5 ? "eager" : "lazy"}
-          decoding="async"
-          fetchPriority={index < 3 ? "high" : "low"}
+          width={1600}
+          height={1600}
+          sizes="(max-width: 640px) 33vw, (max-width: 768px) 25vw, (max-width: 1024px) 20vw, 20vw"
+          loading={index < 3 ? "eager" : "lazy"}
+          priority={index < 3}
+          quality={80}
           draggable={false}
           className="
             block
@@ -1031,12 +984,14 @@ function ImageModal({
             rounded-lg
           "
         >
-          <img
+          <Image
             src={project.image}
             alt={project.title || "Visual work"}
-            loading="eager"
-            decoding="async"
-            fetchPriority="high"
+            width={2400}
+            height={2400}
+            sizes="96vw"
+            quality={90}
+            priority
             draggable={false}
             className="
               block
