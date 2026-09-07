@@ -104,7 +104,7 @@ const ProjectCard = memo(function ProjectCard({
             fetchPriority={isPriority ? "high" : "low"}
             decoding="async"
             sizes="(max-width: 767px) 75vw, 270px"
-            className="object-cover transition-transform duration-500 ease-out group-hover/front:scale-[1.04]"
+            className="transform-gpu object-cover transition-transform duration-500 ease-out group-hover/front:scale-[1.04]"
           />
         )}
 
@@ -132,10 +132,10 @@ const ProjectCard = memo(function ProjectCard({
         )}
 
         {/* HOVER OVERLAY */}
-        <div className="absolute inset-0 bg-black/0 transition-colors duration-300 group-hover/front:bg-black/25" />
+        <div className="absolute inset-0 bg-black/25 opacity-0 transition-opacity duration-300 group-hover/front:opacity-100" />
 
         {/* HOVER LABEL */}
-        <div className="absolute inset-x-0 bottom-0 flex translate-y-2 items-center justify-between bg-gradient-to-t from-black/80 via-black/30 to-transparent px-4 pb-4 pt-12 opacity-0 transition-all duration-300 group-hover/front:translate-y-0 group-hover/front:opacity-100">
+        <div className="absolute inset-x-0 bottom-0 flex translate-y-2 items-center justify-between bg-gradient-to-t from-black/80 via-black/30 to-transparent px-4 pb-4 pt-12 opacity-0 transition-[transform,opacity] duration-300 group-hover/front:translate-y-0 group-hover/front:opacity-100">
           <span className="text-[9px] font-medium uppercase tracking-[0.18em] text-white">
             View Collection
           </span>
@@ -199,8 +199,8 @@ const ProjectStack = memo(function ProjectStack({
 
   return (
     <motion.article
-      initial={{ y: 18, opacity: 0 }}
-      whileInView={{ y: 0, opacity: 1 }}
+      initial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
       viewport={{ once: true, amount: 0.15 }}
       transition={{
         duration: 0.5,
@@ -250,7 +250,7 @@ const ProjectStack = memo(function ProjectStack({
             return (
               <div
                 key={project.image ?? project.video ?? `${category.id}-${index}`}
-                className={`absolute inset-0 transform-gpu transition-all duration-500 ease-out ${STACK_POSITION_CLASSES[index]} ${
+                className={`absolute inset-0 transform-gpu transition-transform duration-500 ease-out ${STACK_POSITION_CLASSES[index]} ${
                   isFront ? "z-20" : "pointer-events-none"
                 }`}
               >
@@ -326,8 +326,8 @@ export default function Projects() {
               </h2>
 
               <motion.p
-                initial={{ y: 12, opacity: 0 }}
-                whileInView={{ y: 0, opacity: 1 }}
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6 }}
                 className="mt-3 max-w-lg text-xs font-light leading-6 text-gray-500 dark:text-gray-400 sm:text-sm"
