@@ -19,19 +19,15 @@ type Category = {
 
 const projects: Record<string, ProjectItem[]> = {
   photoshop: [
-    { title: "", image: "/graphic-designs/Bar-Chow.png" },
-    { title: "", image: "/graphic-designs/Hideout.png" },
-    { title: "", image: "/graphic-designs/Rice-meals.png" },
-    { title: "", image: "/graphic-designs/Drinks.png" },
+    { title: "", image: "/graphic-designs/SGA.png" },
     { title: "", image: "/graphic-designs/HOPromo-Poster.png" },
+    { title: "", image: "/graphic-designs/DJGIANC.png" },
   ],
 
   illustrator: [
     { title: "", image: "/graphic-designs/HO.png" },
-    { title: "", image: "/graphic-designs/NAVIS.png" },
-    { title: "", image: "/graphic-designs/YV.png" },
-    { title: "", image: "/graphic-designs/bubble-bliss.png" },
-    { title: "", image: "/graphic-designs/JTL.png" },
+    { title: "", image: "/graphic-designs/Luffy.png" },
+    { title: "", image: "/graphic-designs/Santa.png" },
   ],
 
   videos: [
@@ -63,136 +59,121 @@ const categories: Category[] = [
   },
 ];
 
+const stackPositionClasses = [
+  "translate-x-0 translate-y-0 rotate-0 scale-100 group-hover/stack:translate-x-0 group-hover/stack:translate-y-0 group-hover/stack:rotate-0 group-hover/stack:scale-100",
+  "-translate-x-1 -translate-y-1 rotate-[-3deg] scale-[0.985] group-hover/stack:-translate-x-4 group-hover/stack:-translate-y-2 group-hover/stack:rotate-[-6deg] group-hover/stack:scale-[0.97]",
+  "translate-x-1 -translate-y-2 rotate-[3deg] scale-[0.97] group-hover/stack:translate-x-4 group-hover/stack:-translate-y-3 group-hover/stack:rotate-[6deg] group-hover/stack:scale-[0.94]",
+] as const;
+
 /* -------------------------------------------------------------------------- */
-/* PROJECT MEDIA                                                              */
+/* PROJECT CARD                                                               */
 /* -------------------------------------------------------------------------- */
 
-function ProjectMedia({
+function ProjectCard({
   project,
   category,
-  index,
-  featured = false,
-  priority = false,
+  isFront,
 }: {
   project: ProjectItem;
   category: Category;
-  index: number;
-  featured?: boolean;
-  priority?: boolean;
+  isFront: boolean;
 }) {
-  return (
-    <Link
-      href={`/projects/${category.id}`}
-      aria-label={`View ${category.label} project ${index + 1}`}
-      className="group/media block h-full w-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/40 dark:focus-visible:ring-white/50"
-    >
-      <div
-        className={`relative h-full min-h-0 w-full overflow-hidden bg-gray-100 dark:bg-neutral-900 ${
-          featured
-            ? "rounded-[1.5rem]"
-            : "rounded-[1rem]"
-        }`}
+  /* FRONT CARD */
+  if (isFront) {
+    return (
+      <Link
+        href={`/projects/${category.id}`}
+        className="group/front relative block h-full w-full overflow-hidden rounded-xl border border-white/10 bg-gray-100 shadow-[0_12px_30px_rgba(0,0,0,0.12)] dark:border-white/10 dark:bg-neutral-900 dark:shadow-[0_12px_30px_rgba(0,0,0,0.35)]"
       >
+        {/* IMAGE */}
         {project.image && (
           <Image
             src={project.image}
-            alt={
-              featured
-                ? `${category.label} project`
-                : `${category.label} project ${index + 1}`
-            }
+            alt={`${category.label} project`}
             fill
-            priority={priority}
-            loading={priority ? undefined : "lazy"}
-            sizes={
-              featured
-                ? "(max-width: 767px) calc(100vw - 3rem), (max-width: 1023px) 55vw, 48vw"
-                : "(max-width: 767px) 42vw, (max-width: 1023px) 22vw, 18vw"
-            }
-            className="object-cover transition-transform duration-500 ease-out group-hover/media:scale-[1.04]"
+            priority
+            fetchPriority="high"
+            sizes="(max-width: 767px) 75vw, 270px"
+            className="object-cover transition-transform duration-500 ease-out group-hover/front:scale-[1.04]"
           />
         )}
 
+        {/* VIDEO */}
         {project.video && (
-          <video
-            src={project.video}
-            muted
-            playsInline
-            preload="metadata"
-            className="h-full w-full object-cover transition-transform duration-500 ease-out group-hover/media:scale-[1.04]"
-          />
-        )}
-
-        <div className="absolute inset-0 bg-black/[0.02] transition-colors duration-300 group-hover/media:bg-black/[0.14]" />
-
-        {project.video && (
-          <span className="absolute left-1/2 top-1/2 flex h-12 w-12 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-black/65 text-white transition-transform duration-300 group-hover/media:scale-105">
-            <Play
-              size={16}
-              fill="currentColor"
-              strokeWidth={1.4}
-              className="ml-0.5"
+          <>
+            <video
+              src={project.video}
+              muted
+              loop
+              playsInline
+              preload="metadata"
+              className="h-full w-full object-cover"
             />
-          </span>
+
+            <div className="absolute left-1/2 top-1/2 flex h-12 w-12 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-black/55 text-white shadow-lg backdrop-blur-sm transition-transform duration-300 group-hover/front:scale-110">
+              <Play
+                size={16}
+                fill="currentColor"
+                strokeWidth={1.4}
+                className="ml-0.5"
+              />
+            </div>
+          </>
         )}
 
-        <span className="absolute left-4 top-4 text-[9px] font-medium uppercase tracking-[0.18em] text-white opacity-0 transition-opacity duration-300 group-hover/media:opacity-100">
-          0{index + 1}
-        </span>
+        {/* HOVER OVERLAY */}
+        <div className="absolute inset-0 bg-black/0 transition-colors duration-300 group-hover/front:bg-black/25" />
 
-        <span className="absolute bottom-4 right-4 flex h-9 w-9 translate-y-2 items-center justify-center rounded-full bg-white text-black opacity-0 transition-all duration-300 group-hover/media:translate-y-0 group-hover/media:opacity-100 dark:bg-black dark:text-white">
-          <ArrowUpRight size={15} strokeWidth={1.4} />
-        </span>
-      </div>
-    </Link>
-  );
-}
+        {/* HOVER LABEL */}
+        <div className="absolute inset-x-0 bottom-0 flex translate-y-2 items-center justify-between bg-gradient-to-t from-black/80 via-black/30 to-transparent px-4 pb-4 pt-12 opacity-0 transition-[transform,opacity] duration-300 group-hover/front:translate-y-0 group-hover/front:opacity-100">
+          <span className="text-[9px] font-medium uppercase tracking-[0.18em] text-white">
+            View Collection
+          </span>
 
-/* -------------------------------------------------------------------------- */
-/* VIDEO INFORMATION                                                          */
-/* -------------------------------------------------------------------------- */
+          <ArrowUpRight
+            size={14}
+            strokeWidth={1.4}
+            className="text-white"
+          />
+        </div>
+      </Link>
+    );
+  }
 
-function VideoDetails({ category }: { category: Category }) {
+  /* BACK CARDS */
   return (
-    <div className="flex h-full min-h-[190px] flex-col justify-between border-l border-black/10 pl-5 dark:border-white/10">
-      <div>
-        <span className="text-[9px] font-medium uppercase tracking-[0.18em] text-gray-400 dark:text-gray-500">
-          Motion archive
-        </span>
-
-        <motion.div
-          initial={{ scaleX: 0 }}
-          whileInView={{ scaleX: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, ease: "easeOut" }}
-          className="mt-5 h-px w-8 origin-left bg-black/25 dark:bg-white/25"
+    <div className="relative h-full w-full overflow-hidden rounded-xl border border-white/10 bg-gray-100 shadow-[0_6px_18px_rgba(0,0,0,0.08)] dark:border-white/10 dark:bg-neutral-900 dark:shadow-[0_6px_18px_rgba(0,0,0,0.25)]">
+      {project.image && (
+        <Image
+          src={project.image}
+          alt=""
+          fill
+          loading="lazy"
+          sizes="270px"
+          className="object-cover"
         />
+      )}
 
-        <p className="mt-5 max-w-[180px] text-[10px] font-light leading-5 text-gray-500 dark:text-gray-400">
-          {category.description}
-        </p>
-      </div>
-
-      <div className="flex items-center justify-between border-t border-black/10 pt-4 dark:border-white/10">
-        <span className="text-[9px] font-light uppercase tracking-[0.16em] text-gray-400 dark:text-gray-500">
-          01 project
-        </span>
-
-        <ArrowUpRight
-          size={14}
-          strokeWidth={1.3}
-          className="text-gray-400 dark:text-gray-500"
+      {project.video && (
+        <video
+          src={project.video}
+          muted
+          playsInline
+          preload="metadata"
+          className="h-full w-full object-cover"
         />
-      </div>
+      )}
+
+      <div className="absolute inset-0 bg-black/[0.05] dark:bg-black/[0.12]" />
     </div>
   );
 }
 
 /* -------------------------------------------------------------------------- */
-/* EDITORIAL PROJECT COLLECTION                                               */
+/* PROJECT STACK                                                              */
 /* -------------------------------------------------------------------------- */
 
-function ProjectCollection({
+function ProjectStack({
   category,
   categoryIndex,
 }: {
@@ -200,157 +181,95 @@ function ProjectCollection({
   categoryIndex: number;
 }) {
   const items = projects[category.id];
-  const featuredProject = items[0];
-  const supportingProjects = items.slice(1);
-  const isReversed = categoryIndex % 2 === 1;
-  const isVideoCollection = category.id === "videos";
+  const stackItems = items;
 
   return (
     <motion.article
-      initial={{ opacity: 0, y: 24 }}
-      whileInView={{ opacity: 1, y: 0 }}
+      initial={{ y: 18, opacity: 0 }}
+      whileInView={{ y: 0, opacity: 1 }}
       viewport={{ once: true, amount: 0.15 }}
       transition={{
-        duration: 0.65,
-        delay: categoryIndex * 0.08,
-        ease: [0.22, 1, 0.36, 1],
+        duration: 0.5,
+        delay: categoryIndex * 0.04,
+        ease: "easeOut",
       }}
-      className="border-t border-black/10 py-12 first:border-t-0 dark:border-white/10 md:py-16"
+      className="flex min-w-0 flex-col"
     >
-      <div className="grid min-w-0 gap-8 lg:grid-cols-12 lg:gap-10">
-        {/* COLLECTION INFORMATION */}
-        <div
-          className={`flex min-h-[210px] flex-col justify-between lg:col-span-3 ${
-            isReversed ? "lg:order-2" : "lg:order-1"
-          }`}
-        >
-          <div>
-            <div className="flex items-center gap-3">
-              <span className="text-[9px] font-medium tracking-[0.2em] text-gray-400 dark:text-gray-500">
-                0{categoryIndex + 1}
-              </span>
+      {/* ------------------------------------------------------------------ */}
+      {/* CATEGORY HEADER                                                     */}
+      {/* ------------------------------------------------------------------ */}
 
-              <motion.div
-                initial={{ scaleX: 0 }}
-                whileInView={{ scaleX: 1 }}
-                viewport={{ once: true }}
-                transition={{
-                  duration: 0.5,
-                  delay: categoryIndex * 0.08 + 0.2,
-                  ease: "easeOut",
-                }}
-                className="h-px w-7 origin-left bg-gray-300 dark:bg-gray-700"
-              />
+      <div className="flex min-h-[82px] items-start justify-between border-b border-white/10 pb-4 dark:border-white/10">
+        <div className="flex min-w-0 items-start gap-3">
+          {/* NUMBER */}
+          <span className="mt-0.5 shrink-0 text-[9px] font-medium tracking-[0.18em] text-gray-400 dark:text-gray-500">
+            0{categoryIndex + 1}
+          </span>
 
-              <span className="text-[9px] font-light uppercase tracking-[0.17em] text-gray-400 dark:text-gray-500">
-                Collection
-              </span>
-            </div>
-
-            <h3 className="mt-6 text-xl font-medium tracking-tight text-black dark:text-white">
+          {/* TITLE */}
+          <div className="min-w-0">
+            <h3 className="text-sm font-medium tracking-tight text-black dark:text-white">
               {category.label}
             </h3>
 
-            <p className="mt-3 max-w-[230px] text-[10px] font-light leading-5 text-gray-500 dark:text-gray-400">
+            <p className="mt-1 max-w-[220px] text-[10px] font-light leading-4 text-gray-400 dark:text-gray-500">
               {category.description}
             </p>
           </div>
-
-          <div className="mt-8 flex items-center justify-between border-t border-black/10 pt-4 dark:border-white/10">
-            <span className="text-[9px] font-light uppercase tracking-[0.17em] text-gray-400 dark:text-gray-500">
-              {items.length} {items.length === 1 ? "Project" : "Projects"}
-            </span>
-
-            <span className="text-[9px] font-light uppercase tracking-[0.17em] text-gray-400 dark:text-gray-500">
-              2025 — 2026
-            </span>
-          </div>
         </div>
+      </div>
 
-        {/* PROJECT MEDIA */}
-        <div
-          className={`min-w-0 lg:col-span-9 ${
-            isReversed ? "lg:order-1" : "lg:order-2"
-          }`}
-        >
-          {isVideoCollection ? (
-            <div className="grid min-w-0 items-stretch gap-5 sm:grid-cols-[minmax(0,1fr)_minmax(170px,0.36fr)]">
-              <motion.div
-                whileHover={{ y: -5 }}
-                transition={{ duration: 0.3, ease: "easeOut" }}
-                className="aspect-[1.4] min-h-[220px]"
+      {/* ------------------------------------------------------------------ */}
+      {/* STACK                                                               */}
+      {/* ------------------------------------------------------------------ */}
+
+      <div className="mt-8 flex h-[300px] w-full items-start justify-center">
+        <div className="group/stack relative h-[270px] w-full max-w-[270px]">
+          {stackItems.map((project, index) => {
+            const isFront = index === 0;
+            const positionClasses =
+              stackPositionClasses[index] ??
+              stackPositionClasses[stackPositionClasses.length - 1];
+
+            return (
+              <div
+                key={`${category.id}-${index}`}
+                className={`absolute inset-0 transform-gpu transition-transform duration-500 ease-out ${positionClasses} ${
+                  isFront ? "z-20" : "pointer-events-none"
+                }`}
               >
-                <ProjectMedia
-                  project={featuredProject}
+                <ProjectCard
+                  project={project}
                   category={category}
-                  index={0}
-                  featured
-                  priority
+                  isFront={isFront}
                 />
-              </motion.div>
-
-              <VideoDetails category={category} />
-            </div>
-          ) : (
-            <div className="grid min-w-0 gap-4 sm:grid-cols-12 sm:gap-5">
-              {/* MAIN PROJECT */}
-              <motion.div
-                whileHover={{ y: -5 }}
-                transition={{ duration: 0.3, ease: "easeOut" }}
-                className="aspect-[1.25] min-h-[230px] sm:col-span-7"
-              >
-                <ProjectMedia
-                  project={featuredProject}
-                  category={category}
-                  index={0}
-                  featured
-                  priority={categoryIndex === 0}
-                />
-              </motion.div>
-
-              {/* SUPPORTING PROJECTS */}
-              <div className="grid grid-cols-2 gap-3 sm:col-span-5 sm:gap-4">
-                {supportingProjects.map((project, index) => (
-                  <motion.div
-                    key={`${category.id}-${index + 1}`}
-                    initial={{ opacity: 0, y: 12 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, amount: 0.2 }}
-                    transition={{
-                      duration: 0.4,
-                      delay: 0.12 + index * 0.06,
-                      ease: "easeOut",
-                    }}
-                    className="aspect-[1.05] min-h-[105px]"
-                  >
-                    <ProjectMedia
-                      project={project}
-                      category={category}
-                      index={index + 1}
-                    />
-                  </motion.div>
-                ))}
               </div>
-            </div>
-          )}
+            );
+          })}
+        </div>
+      </div>
 
-          <div className="mt-5 flex items-center justify-between border-b border-black/10 pb-3 dark:border-white/10">
-            <span className="text-[9px] font-light uppercase tracking-[0.18em] text-gray-400 dark:text-gray-500">
-              Selected work
-            </span>
+      {/* ------------------------------------------------------------------ */}
+      {/* FOOTER                                                              */}
+      {/* ------------------------------------------------------------------ */}
 
-            <Link
-              href={`/projects/${category.id}`}
-              className="group/explore flex items-center gap-2 text-[9px] font-medium uppercase tracking-[0.17em] text-black transition-colors duration-300 hover:text-gray-500 dark:text-white dark:hover:text-gray-400"
-            >
-              View collection
-              <ArrowUpRight
-                size={13}
-                strokeWidth={1.4}
-                className="transition-transform duration-300 group-hover/explore:translate-x-0.5 group-hover/explore:-translate-y-0.5"
-              />
-            </Link>
-          </div>
+      <div className="mt-1 flex min-h-[24px] items-center justify-between border-t border-white/10 pt-4 dark:border-white/10">
+        <span className="text-[9px] font-light uppercase tracking-[0.18em] text-gray-400 dark:text-gray-500">
+          Selected Work
+        </span>
+
+        {/* DOTS */}
+        <div className="flex items-center gap-1.5">
+          {stackItems.map((_, index) => (
+            <span
+              key={`${category.id}-dot-${index}`}
+              className={`h-1 w-1 rounded-full ${
+                index === 0
+                  ? "bg-black dark:bg-white"
+                  : "bg-gray-300 dark:bg-gray-600"
+              }`}
+            />
+          ))}
         </div>
       </div>
     </motion.article>
@@ -408,12 +327,12 @@ export default function Projects() {
         </div>
 
         {/* ---------------------------------------------------------------- */}
-        {/* PROJECT COLLECTIONS                                                */}
-        {/* ---------------------------------------------------------------- */}
+        {/* PROJECT GRID                                                       */}
+        {/* ------------------------------------------------------------------ */}
 
-        <div className="min-w-0">
+        <div className="grid min-w-0 grid-cols-1 gap-16 md:grid-cols-3 md:gap-8 lg:gap-12">
           {categories.map((category, index) => (
-            <ProjectCollection
+            <ProjectStack
               key={category.id}
               category={category}
               categoryIndex={index}
@@ -423,7 +342,7 @@ export default function Projects() {
 
         {/* ---------------------------------------------------------------- */}
         {/* BOTTOM LINE                                                        */}
-        {/* ---------------------------------------------------------------- */}
+        {/* ------------------------------------------------------------------ */}
 
         <div className="mt-20 flex items-center gap-4">
           <div className="h-px flex-1 bg-gray-500/15 dark:bg-gray-400/15" />
