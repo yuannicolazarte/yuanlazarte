@@ -46,20 +46,17 @@ const categories: Category[] = [
   {
     id: "photoshop",
     label: "Photoshop",
-    description:
-      "Digital compositions, posters, and visual explorations.",
+    description: "Digital compositions, posters, and visual explorations.",
   },
   {
     id: "illustrator",
     label: "Illustrator",
-    description:
-      "Vector artwork, branding, and structured visual design.",
+    description: "Vector artwork, branding, and structured visual design.",
   },
   {
     id: "videos",
     label: "Videos",
-    description:
-      "Motion, editing, and visual storytelling.",
+    description: "Motion, editing, and visual storytelling.",
   },
 ];
 
@@ -129,11 +126,7 @@ function ProjectCard({
             View Collection
           </span>
 
-          <ArrowUpRight
-            size={14}
-            strokeWidth={1.4}
-            className="text-white"
-          />
+          <ArrowUpRight size={14} strokeWidth={1.4} className="text-white" />
         </div>
       </Link>
     );
@@ -148,6 +141,7 @@ function ProjectCard({
           alt=""
           fill
           loading="lazy"
+          fetchPriority="low"
           decoding="async"
           sizes="270px"
           className="object-cover"
@@ -168,6 +162,7 @@ function ProjectCard({
     </div>
   );
 }
+
 
 /* -------------------------------------------------------------------------- */
 /* PROJECT STACK                                                              */
@@ -225,8 +220,7 @@ function ProjectStack({
 
         {/* PROJECT COUNT */}
         <span className="shrink-0 whitespace-nowrap pt-0.5 text-[9px] font-light uppercase tracking-[0.12em] text-gray-400 dark:text-gray-500">
-          {items.length}{" "}
-          {items.length === 1 ? "Project" : "Projects"}
+          {items.length} {items.length === 1 ? "Project" : "Projects"}
         </span>
       </div>
 
@@ -350,8 +344,8 @@ export default function Projects() {
                 transition={{ duration: 0.6 }}
                 className="mt-3 max-w-lg text-xs font-light leading-6 text-gray-500 dark:text-gray-400 sm:text-sm"
               >
-                A collection of graphic design works, branding projects,
-                and creative explorations.
+                A collection of graphic design works, branding projects, and
+                creative explorations.
               </motion.p>
             </div>
 
