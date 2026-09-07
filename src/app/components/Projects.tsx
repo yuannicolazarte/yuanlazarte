@@ -91,6 +91,7 @@ function ProjectCard({
             fill
             priority
             fetchPriority="high"
+            decoding="async"
             sizes="(max-width: 767px) 75vw, 270px"
             className="object-cover transition-transform duration-500 ease-out group-hover/front:scale-[1.04]"
           />
@@ -147,6 +148,7 @@ function ProjectCard({
           alt=""
           fill
           loading="lazy"
+          decoding="async"
           sizes="270px"
           className="object-cover"
         />
@@ -157,7 +159,7 @@ function ProjectCard({
           src={project.video}
           muted
           playsInline
-          preload="metadata"
+          preload="none"
           className="h-full w-full object-cover"
         />
       )}
@@ -268,9 +270,7 @@ function ProjectStack({
               <div
                 key={`${category.id}-${index}`}
                 className={`absolute inset-0 transform-gpu transition-all duration-500 ease-out ${positionClasses} ${
-                  isFront
-                    ? "z-20"
-                    : "pointer-events-none"
+                  isFront ? "z-20" : "pointer-events-none"
                 }`}
               >
                 <ProjectCard
@@ -363,7 +363,7 @@ export default function Projects() {
 
         {/* ---------------------------------------------------------------- */}
         {/* PROJECT GRID                                                       */}
-        {/* ------------------------------------------------------------------ */}
+        {/* ---------------------------------------------------------------- */}
 
         <div className="grid min-w-0 grid-cols-1 gap-16 md:grid-cols-3 md:gap-8 lg:gap-12">
           {categories.map((category, index) => (
@@ -377,7 +377,7 @@ export default function Projects() {
 
         {/* ---------------------------------------------------------------- */}
         {/* BOTTOM LINE                                                        */}
-        {/* ------------------------------------------------------------------ */}
+        {/* ---------------------------------------------------------------- */}
 
         <div className="mt-20 flex items-center gap-4">
           <div className="h-px flex-1 bg-gray-500/15 dark:bg-gray-400/15" />
