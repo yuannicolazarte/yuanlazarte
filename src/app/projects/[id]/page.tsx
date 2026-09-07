@@ -1,6 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import {
+  memo,
+  useCallback,
+  useEffect,
+  useState,
+} from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import {
@@ -82,107 +87,71 @@ export default function ProjectPage() {
           ? projects.illustrator
           : null;
 
-  /*
-   * PAGE ENTRY ANIMATION
-   */
   useEffect(() => {
-    const timer = requestAnimationFrame(() => {
+    const frame = requestAnimationFrame(() => {
       setPageLoaded(true);
     });
 
-    return () => cancelAnimationFrame(timer);
+    return () => {
+      cancelAnimationFrame(frame);
+    };
   }, []);
 
-  /*
-   * PRELOAD IMAGES GRADUALLY
-   */
   useEffect(() => {
-    if (id === "videos" || !currentProjects) {
-      return;
-    }
+    const modalOpen = Boolean(
+      selectedImage || selectedVideo
+    );
 
-    const imageProjects = currentProjects as ImageProject[];
-
-    let index = 0;
-    let cancelled = false;
-
-    const preloadNext = () => {
-      if (cancelled || index >= imageProjects.length) {
-        return;
-      }
-
-      const image = new Image();
-
-      image.src = imageProjects[index].image;
-
-      index += 1;
-
-      image.onload = () => {
-        if (cancelled) {
-          return;
-        }
-
-        setTimeout(preloadNext, 40);
-      };
-
-      image.onerror = () => {
-        if (cancelled) {
-          return;
-        }
-
-        setTimeout(preloadNext, 40);
-      };
-    };
-
-    const startTimer = window.setTimeout(() => {
-      preloadNext();
-    }, 100);
-
-    return () => {
-      cancelled = true;
-      window.clearTimeout(startTimer);
-    };
-  }, [id, currentProjects]);
-
-  /*
-   * LOCK PAGE SCROLL WHEN MODAL IS OPEN
-   */
-  useEffect(() => {
-    const modalOpen = selectedImage || selectedVideo;
-
-    if (!modalOpen) {
-      document.body.style.overflow = "";
-      return;
-    }
-
-    document.body.style.overflow = "hidden";
+    document.body.style.overflow = modalOpen
+      ? "hidden"
+      : "";
 
     return () => {
       document.body.style.overflow = "";
     };
   }, [selectedImage, selectedVideo]);
 
-  /*
-   * ESCAPE TO CLOSE MODAL
-   */
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        setSelectedImage(null);
-        setSelectedVideo(null);
+      if (event.key !== "Escape") {
+        return;
       }
+
+      setSelectedImage(null);
+      setSelectedVideo(null);
     };
 
     window.addEventListener("keydown", handleKeyDown);
 
     return () => {
-      window.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener(
+        "keydown",
+        handleKeyDown
+      );
     };
   }, []);
 
-  /*
-   * INVALID CATEGORY
-   */
+  const handleImageSelect = useCallback(
+    (project: ImageProject) => {
+      setSelectedVideo(null);
+      setSelectedImage(project);
+    },
+    []
+  );
+
+  const handleVideoSelect = useCallback(
+    (project: VideoProject) => {
+      setSelectedImage(null);
+      setSelectedVideo(project);
+    },
+    []
+  );
+
+  const closeModal = useCallback(() => {
+    setSelectedImage(null);
+    setSelectedVideo(null);
+  }, []);
+
   if (!categoryName || !currentProjects) {
     return (
       <main className="flex min-h-screen items-center justify-center bg-white text-black dark:bg-[#080808] dark:text-white">
@@ -207,11 +176,6 @@ export default function ProjectPage() {
     );
   }
 
-  const closeModal = () => {
-    setSelectedImage(null);
-    setSelectedVideo(null);
-  };
-
   const isVideoPage = id === "videos";
 
   return (
@@ -226,23 +190,15 @@ export default function ProjectPage() {
         text-black
         dark:bg-[#080808]
         dark:text-white
-
         py-20
-
         transition-opacity
         duration-1000
         ease-out
-
         ${pageLoaded ? "opacity-100" : "opacity-0"}
-
         lg:ml-55
         lg:w-[calc(100%-220px)]
       `}
     >
-      {/* ========================================================= */}
-      {/* BACKGROUND DETAILS */}
-      {/* ========================================================= */}
-
       <div
         className="
           pointer-events-none
@@ -292,27 +248,16 @@ export default function ProjectPage() {
         />
       </div>
 
-      {/* ========================================================= */}
-      {/* CONTENT */}
-      {/* ========================================================= */}
-
       <div className="relative z-10 mx-auto w-[calc(100%-3rem)] max-w-5xl">
-
-        {/* ======================================================= */}
-        {/* TOP NAV */}
-        {/* ======================================================= */}
-
         <div
           className={`
             mb-16
             flex
             items-center
             justify-between
-
             transition-all
             duration-1000
             ease-[cubic-bezier(0.22,1,0.36,1)]
-
             ${
               pageLoaded
                 ? "translate-y-0 opacity-100"
@@ -377,10 +322,6 @@ export default function ProjectPage() {
           </div>
         </div>
 
-        {/* ======================================================= */}
-        {/* HEADER */}
-        {/* ======================================================= */}
-
         <header className="mb-16 sm:mb-20 lg:mb-24">
           <div className="overflow-hidden">
             <p
@@ -390,12 +331,10 @@ export default function ProjectPage() {
                 uppercase
                 tracking-[0.4em]
                 text-neutral-400
-
                 transition-all
                 duration-1000
                 delay-100
                 ease-[cubic-bezier(0.22,1,0.36,1)]
-
                 ${
                   pageLoaded
                     ? "translate-y-0 opacity-100"
@@ -414,12 +353,10 @@ export default function ProjectPage() {
                 font-light
                 leading-[0.85]
                 tracking-[-0.07em]
-
                 transition-all
                 duration-[1200ms]
                 delay-200
                 ease-[cubic-bezier(0.22,1,0.36,1)]
-
                 ${
                   pageLoaded
                     ? "translate-y-0 opacity-100"
@@ -443,11 +380,9 @@ export default function ProjectPage() {
                 leading-relaxed
                 text-neutral-500
                 dark:text-neutral-400
-
                 transition-all
                 duration-1000
                 delay-500
-
                 ${
                   pageLoaded
                     ? "translate-y-0 opacity-100"
@@ -469,11 +404,9 @@ export default function ProjectPage() {
                 uppercase
                 tracking-[0.25em]
                 text-neutral-400
-
                 transition-all
                 duration-1000
                 delay-500
-
                 ${
                   pageLoaded
                     ? "translate-y-0 opacity-100"
@@ -490,10 +423,6 @@ export default function ProjectPage() {
             </div>
           </div>
         </header>
-
-        {/* ======================================================= */}
-        {/* PROJECT GRID */}
-        {/* ======================================================= */}
 
         {isVideoPage ? (
           <div
@@ -513,7 +442,7 @@ export default function ProjectPage() {
                   project={project}
                   index={index}
                   loaded={pageLoaded}
-                  onClick={() => setSelectedVideo(project)}
+                  onSelect={handleVideoSelect}
                 />
               )
             )}
@@ -536,16 +465,12 @@ export default function ProjectPage() {
                   index={index}
                   loaded={pageLoaded}
                   categoryName={categoryName}
-                  onClick={() => setSelectedImage(project)}
+                  onSelect={handleImageSelect}
                 />
               )
             )}
           </div>
         )}
-
-        {/* ======================================================= */}
-        {/* FOOTER */}
-        {/* ======================================================= */}
 
         <footer
           className={`
@@ -564,11 +489,9 @@ export default function ProjectPage() {
             sm:flex-row
             sm:items-center
             sm:justify-between
-
             transition-all
             duration-1000
             delay-700
-
             ${
               pageLoaded
                 ? "translate-y-0 opacity-100"
@@ -605,20 +528,12 @@ export default function ProjectPage() {
         </footer>
       </div>
 
-      {/* ========================================================= */}
-      {/* IMAGE MODAL */}
-      {/* ========================================================= */}
-
       {selectedImage && (
         <ImageModal
           project={selectedImage}
           onClose={closeModal}
         />
       )}
-
-      {/* ========================================================= */}
-      {/* VIDEO MODAL */}
-      {/* ========================================================= */}
 
       {selectedVideo && (
         <VideoModal
@@ -634,23 +549,25 @@ export default function ProjectPage() {
 /* IMAGE CARD */
 /* =============================================================== */
 
-function ImageCard({
-  project,
-  index,
-  loaded,
-  categoryName,
-  onClick,
-}: {
+type ImageCardProps = {
   project: ImageProject;
   index: number;
   loaded: boolean;
   categoryName: string;
-  onClick: () => void;
-}) {
+  onSelect: (project: ImageProject) => void;
+};
+
+const ImageCard = memo(function ImageCard({
+  project,
+  index,
+  loaded,
+  categoryName,
+  onSelect,
+}: ImageCardProps) {
   return (
     <button
       type="button"
-      onClick={onClick}
+      onClick={() => onSelect(project)}
       className={`
         group
         relative
@@ -662,11 +579,9 @@ function ImageCard({
         overflow-hidden
         rounded-lg
         text-left
-
         transition-all
         duration-[1000ms]
         ease-[cubic-bezier(0.22,1,0.36,1)]
-
         ${
           loaded
             ? "translate-y-0 scale-100 opacity-100"
@@ -699,20 +614,21 @@ function ImageCard({
             project.title ||
             `${categoryName} visual work`
           }
-          loading={index < 5 ? "eager" : "lazy"}
+          loading={index === 0 ? "eager" : "lazy"}
           decoding="async"
-          fetchPriority={index < 3 ? "high" : "low"}
+          fetchPriority={
+            index === 0 ? "high" : undefined
+          }
           draggable={false}
           className="
             block
             h-auto
             w-full
             object-contain
-
+            transform-gpu
             transition-transform
             duration-[1200ms]
             ease-[cubic-bezier(0.22,1,0.36,1)]
-
             group-hover:scale-[1.045]
           "
         />
@@ -753,11 +669,9 @@ function ImageCard({
               text-white
               opacity-0
               backdrop-blur-md
-
               transition-all
               duration-500
               ease-out
-
               group-hover:translate-y-0
               group-hover:opacity-100
             "
@@ -800,27 +714,29 @@ function ImageCard({
       </div>
     </button>
   );
-}
+});
 
 /* =============================================================== */
 /* VIDEO CARD */
 /* =============================================================== */
 
-function VideoCard({
-  project,
-  index,
-  loaded,
-  onClick,
-}: {
+type VideoCardProps = {
   project: VideoProject;
   index: number;
   loaded: boolean;
-  onClick: () => void;
-}) {
+  onSelect: (project: VideoProject) => void;
+};
+
+const VideoCard = memo(function VideoCard({
+  project,
+  index,
+  loaded,
+  onSelect,
+}: VideoCardProps) {
   return (
     <button
       type="button"
-      onClick={onClick}
+      onClick={() => onSelect(project)}
       className={`
         group
         relative
@@ -829,11 +745,9 @@ function VideoCard({
         overflow-hidden
         rounded-xl
         text-left
-
         transition-all
         duration-[1000ms]
         ease-[cubic-bezier(0.22,1,0.36,1)]
-
         ${
           loaded
             ? "translate-y-0 opacity-100"
@@ -867,11 +781,10 @@ function VideoCard({
             h-auto
             w-full
             object-cover
-
+            transform-gpu
             transition-transform
             duration-[1200ms]
             ease-[cubic-bezier(0.22,1,0.36,1)]
-
             group-hover:scale-[1.04]
           "
         />
@@ -902,11 +815,9 @@ function VideoCard({
               text-white
               shadow-xl
               backdrop-blur-md
-
               transition-all
               duration-700
               ease-[cubic-bezier(0.22,1,0.36,1)]
-
               group-hover:scale-110
               group-hover:bg-white
               group-hover:text-black
@@ -950,7 +861,7 @@ function VideoCard({
       </div>
     </button>
   );
-}
+});
 
 /* =============================================================== */
 /* IMAGE MODAL */
@@ -975,7 +886,6 @@ function ImageModal({
         bg-black/90
         p-3
         backdrop-blur-xl
-
         animate-[modalFade_400ms_ease-out]
         sm:p-6
       "
@@ -989,7 +899,6 @@ function ImageModal({
           max-w-[96vw]
           items-center
           justify-center
-
           animate-[modalZoom_600ms_cubic-bezier(0.22,1,0.36,1)]
         "
         onClick={(event) => event.stopPropagation()}
@@ -1012,7 +921,6 @@ function ImageModal({
             bg-white
             text-black
             shadow-xl
-
             transition-all
             duration-300
             hover:scale-110
@@ -1078,7 +986,6 @@ function VideoModal({
         bg-black/90
         p-3
         backdrop-blur-xl
-
         animate-[modalFade_400ms_ease-out]
         sm:p-6
       "
@@ -1094,7 +1001,6 @@ function VideoModal({
           justify-center
           overflow-hidden
           rounded-xl
-
           animate-[modalZoom_600ms_cubic-bezier(0.22,1,0.36,1)]
         "
         onClick={(event) => event.stopPropagation()}
@@ -1117,7 +1023,6 @@ function VideoModal({
             bg-white
             text-black
             shadow-xl
-
             transition-all
             duration-300
             hover:scale-110
