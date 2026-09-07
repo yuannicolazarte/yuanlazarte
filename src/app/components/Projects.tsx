@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight, Play } from "lucide-react";
 import { motion } from "framer-motion";
+import { memo } from "react";
 
 type ProjectItem = {
   title: string;
@@ -60,18 +61,30 @@ const categories: Category[] = [
   },
 ];
 
+const MAX_STACK_ITEMS = 5;
+
+const STACK_POSITION_CLASSES = [
+  "translate-x-0 translate-y-0 rotate-0 scale-100 group-hover/stack:translate-x-0 group-hover/stack:translate-y-0 group-hover/stack:rotate-0 group-hover/stack:scale-100",
+  "-translate-x-1 -translate-y-1 rotate-[-3deg] scale-[0.985] group-hover/stack:-translate-x-4 group-hover/stack:-translate-y-2 group-hover/stack:rotate-[-6deg] group-hover/stack:scale-[0.97]",
+  "translate-x-1 -translate-y-2 rotate-[3deg] scale-[0.97] group-hover/stack:translate-x-4 group-hover/stack:-translate-y-3 group-hover/stack:rotate-[6deg] group-hover/stack:scale-[0.94]",
+  "-translate-x-1.5 -translate-y-2.5 rotate-[-5deg] scale-[0.955] group-hover/stack:-translate-x-7 group-hover/stack:-translate-y-4 group-hover/stack:rotate-[-9deg] group-hover/stack:scale-[0.91]",
+  "translate-x-1.5 -translate-y-3 rotate-[5deg] scale-[0.94] group-hover/stack:translate-x-7 group-hover/stack:-translate-y-5 group-hover/stack:rotate-[10deg] group-hover/stack:scale-[0.88]",
+] as const;
+
 /* -------------------------------------------------------------------------- */
 /* PROJECT CARD                                                               */
 /* -------------------------------------------------------------------------- */
 
-function ProjectCard({
+const ProjectCard = memo(function ProjectCard({
   project,
   category,
   isFront,
+  isPriority,
 }: {
   project: ProjectItem;
   category: Category;
   isFront: boolean;
+  isPriority: boolean;
 }) {
   /* FRONT CARD */
   if (isFront) {
@@ -86,8 +99,9 @@ function ProjectCard({
             src={project.image}
             alt={`${category.label} project`}
             fill
-            priority
-            fetchPriority="high"
+            priority={isPriority}
+            loading={isPriority ? "eager" : "lazy"}
+            fetchPriority={isPriority ? "high" : "low"}
             decoding="async"
             sizes="(max-width: 767px) 75vw, 270px"
             className="object-cover transition-transform duration-500 ease-out group-hover/front:scale-[1.04]"
@@ -161,14 +175,13 @@ function ProjectCard({
       <div className="absolute inset-0 bg-black/[0.05] dark:bg-black/[0.12]" />
     </div>
   );
-}
-
+});
 
 /* -------------------------------------------------------------------------- */
 /* PROJECT STACK                                                              */
 /* -------------------------------------------------------------------------- */
 
-function ProjectStack({
+const ProjectStack = memo(function ProjectStack({
   category,
   categoryIndex,
 }: {
@@ -181,7 +194,8 @@ function ProjectStack({
    * Only five cards are rendered for each stack.
    * Images beyond the first five are not mounted in the DOM.
    */
-  const stackItems = items.slice(0, 5);
+  const stackItems =
+    items.length > MAX_STACK_ITEMS ? items.slice(0, MAX_STACK_ITEMS) : items;
 
   return (
     <motion.article
@@ -233,37 +247,10 @@ function ProjectStack({
           {stackItems.map((project, index) => {
             const isFront = index === 0;
 
-            let positionClasses = "";
-
-            if (index === 0) {
-              positionClasses =
-                "translate-x-0 translate-y-0 rotate-0 scale-100 group-hover/stack:translate-x-0 group-hover/stack:translate-y-0 group-hover/stack:rotate-0 group-hover/stack:scale-100";
-            }
-
-            if (index === 1) {
-              positionClasses =
-                "-translate-x-1 -translate-y-1 rotate-[-3deg] scale-[0.985] group-hover/stack:-translate-x-4 group-hover/stack:-translate-y-2 group-hover/stack:rotate-[-6deg] group-hover/stack:scale-[0.97]";
-            }
-
-            if (index === 2) {
-              positionClasses =
-                "translate-x-1 -translate-y-2 rotate-[3deg] scale-[0.97] group-hover/stack:translate-x-4 group-hover/stack:-translate-y-3 group-hover/stack:rotate-[6deg] group-hover/stack:scale-[0.94]";
-            }
-
-            if (index === 3) {
-              positionClasses =
-                "-translate-x-1.5 -translate-y-2.5 rotate-[-5deg] scale-[0.955] group-hover/stack:-translate-x-7 group-hover/stack:-translate-y-4 group-hover/stack:rotate-[-9deg] group-hover/stack:scale-[0.91]";
-            }
-
-            if (index === 4) {
-              positionClasses =
-                "translate-x-1.5 -translate-y-3 rotate-[5deg] scale-[0.94] group-hover/stack:translate-x-7 group-hover/stack:-translate-y-5 group-hover/stack:rotate-[10deg] group-hover/stack:scale-[0.88]";
-            }
-
             return (
               <div
-                key={`${category.id}-${index}`}
-                className={`absolute inset-0 transform-gpu transition-all duration-500 ease-out ${positionClasses} ${
+                key={project.image ?? project.video ?? `${category.id}-${index}`}
+                className={`absolute inset-0 transform-gpu transition-all duration-500 ease-out ${STACK_POSITION_CLASSES[index]} ${
                   isFront ? "z-20" : "pointer-events-none"
                 }`}
               >
@@ -271,6 +258,7 @@ function ProjectStack({
                   project={project}
                   category={category}
                   isFront={isFront}
+                  isPriority={isFront && categoryIndex === 0}
                 />
               </div>
             );
@@ -303,7 +291,7 @@ function ProjectStack({
       </div>
     </motion.article>
   );
-}
+});
 
 /* -------------------------------------------------------------------------- */
 /* PROJECTS SECTION                                                           */
