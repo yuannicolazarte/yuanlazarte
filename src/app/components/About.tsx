@@ -115,7 +115,7 @@ export default function About() {
             <div className="mx-auto w-full min-[850px]:mx-0">
               <div className="relative">
                 {/* IMAGE */}
-                <div className="relative mx-auto aspect-square w-full max-w-[360px] overflow-hidden bg-gray-100 dark:bg-neutral-900 min-[850px]:max-w-none">
+                <div className="relative mx-auto aspect-square w-full max-w-90 overflow-hidden bg-gray-100 dark:bg-neutral-900 min-[850px]:max-w-none">
                   <Image
                     src="/images/profile.webp"
                     alt="Yuan Lazarte"
@@ -209,9 +209,9 @@ export default function About() {
               </div>
 
               {/* ACTIVE FEATURE */}
-              <div className="relative mt-6 overflow-hidden rounded-xl border border-gray-500/15 bg-gray-50/50 p-5 dark:border-gray-400/15 dark:bg-white/[0.025]">
+              <div className="relative mt-6 overflow-hidden rounded-xl border border-gray-500/15 bg-gray-50/50 p-5 dark:border-gray-400/15 dark:bg-white/2.5">
                 {/* ACTIVE NUMBER */}
-                <div className="absolute right-4 top-3 select-none text-5xl font-medium tracking-[-0.06em] text-black/[0.035] dark:text-white/[0.045]">
+                <div className="absolute right-4 top-3 select-none text-5xl font-medium tracking-[-0.06em] text-black/[0.035] dark:text-white/4.5">
                   {designTabs[designTab].number}
                 </div>
 
@@ -276,7 +276,7 @@ export default function About() {
                         strokeWidth={1.2}
                         className={`transition-all duration-300 ${
                           isActive
-                            ? "translate-x-0 -translate-y-0 opacity-100 text-black dark:text-white"
+                            ? "translate-x-0 translate-y-0 opacity-100 text-black dark:text-white"
                             : "translate-y-1 -translate-x-1 opacity-0 text-gray-400 group-hover:translate-x-0 group-hover:translate-y-0 group-hover:opacity-100"
                         }`}
                       />
@@ -372,7 +372,7 @@ export default function About() {
               </div>
 
               {/* CONTENT */}
-              <div className="grid min-h-[330px] grid-cols-1 min-[600px]:grid-cols-[90px_1fr]">
+              <div className="grid min-h-82.5 grid-cols-1 min-[600px]:grid-cols-[90px_1fr]">
                 {/* VERTICAL NAVIGATION */}
                 <div className="relative flex gap-1 border-b border-gray-500/10 py-6 min-[600px]:flex-col min-[600px]:border-b-0 min-[600px]:border-r min-[600px]:py-8 dark:border-gray-400/10">
                   {(Object.keys(contentTabs) as Array<
@@ -413,7 +413,7 @@ export default function About() {
                         </span>
 
                         {isActive && (
-                          <span className="absolute bottom-0 left-0 h-px w-full bg-black dark:bg-white min-[600px]:bottom-auto min-[600px]:left-auto min-[600px]:right-[-1px] min-[600px]:top-0 min-[600px]:h-full min-[600px]:w-px" />
+                          <span className="absolute bottom-0 left-0 h-px w-full bg-black dark:bg-white min-[600px]:bottom-auto min-[600px]:left-auto min-[600px]:right-px min-[600px]:top-0 min-[600px]:h-full min-[600px]:w-px" />
                         )}
                       </button>
                     );
@@ -436,7 +436,7 @@ export default function About() {
                     </div>
 
                     {/* TITLE */}
-                    <h3 className="mt-7 max-w-lg text-3xl font-medium tracking-[-0.05em] text-black dark:text-white sm:text-4xl">
+                    <h3 className="mt-7 max-w-lg text-3xl font-medium tracking-tighter text-black dark:text-white sm:text-4xl">
                       {contentTabs[contentTab].title}
                     </h3>
 

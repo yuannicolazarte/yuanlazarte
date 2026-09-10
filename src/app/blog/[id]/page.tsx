@@ -436,7 +436,7 @@ export default function BlogPage({
             transition={{ duration: 0.65, delay: 0.25 }}
             className="mx-auto mt-10 w-full max-w-4xl"
           >
-            <div className="relative aspect-[16/9] w-full overflow-hidden rounded-2xl bg-gray-100 dark:bg-gray-900">
+            <div className="relative aspect-video w-full overflow-hidden rounded-2xl bg-gray-100 dark:bg-gray-900">
               <Image
                 src={`/blog/blog${id}.png`}
                 alt={blog.title}

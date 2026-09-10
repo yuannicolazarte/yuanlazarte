@@ -27,30 +27,31 @@ type VideoProject = {
 
 const projects = {
   photoshop: [
-    { title: "", image: "/graphic-designs/Bar-Chow.png" },
-    { title: "", image: "/graphic-designs/Hideout.png" },
-    { title: "", image: "/graphic-designs/Rice-meals.png" },
-    { title: "", image: "/graphic-designs/Drinks.png" },
-    { title: "", image: "/graphic-designs/HOPromo-Poster.png" },
-    { title: "", image: "/graphic-designs/Slaughter.png" },
-    { title: "", image: "/graphic-designs/DJGIANC.png" },
-    { title: "", image: "/graphic-designs/SGA.png" },
-    { title: "", image: "/graphic-designs/Lalisa.png" },
-    { title: "", image: "/graphic-designs/MedusaxLilith.png" },
-    { title: "", image: "/graphic-designs/Insecurity.png" },
-    { title: "", image: "/graphic-designs/Edwards.png" },
-    { title: "", image: "/graphic-designs/RentConnect.jpg" },
+    { title: "", image: "/graphic-designs/Photoshop/Burger.png" },
+    { title: "", image: "/graphic-designs/Photoshop/Bar-Chow.png" },
+    { title: "", image: "/graphic-designs/Photoshop/Hideout.png" },
+    { title: "", image: "/graphic-designs/Photoshop/Rice-meals.png" },
+    { title: "", image: "/graphic-designs/Photoshop/Drinks.png" },
+    { title: "", image: "/graphic-designs/Photoshop/HOPromo-Poster.png" },
+    { title: "", image: "/graphic-designs/Photoshop/Slaughter.png" },
+    { title: "", image: "/graphic-designs/Photoshop/DJGIANC.png" },
+    { title: "", image: "/graphic-designs/Photoshop/SGA.png" },
+    { title: "", image: "/graphic-designs/Photoshop/Lalisa.png" },
+    { title: "", image: "/graphic-designs/Photoshop/MedusaxLilith.png" },
+    { title: "", image: "/graphic-designs/Photoshop/Insecurity.png" },
+    { title: "", image: "/graphic-designs/Photoshop/Edwards.png" },
+    { title: "", image: "/graphic-designs/Photoshop/RentConnect.jpg" },
   ],
 
   illustrator: [
-    { title: "", image: "/graphic-designs/HO.png" },
-    { title: "", image: "/graphic-designs/NAVIS.png" },
-    { title: "", image: "/graphic-designs/YV.png" },
-    { title: "", image: "/graphic-designs/bubble-bliss.png" },
-    { title: "", image: "/graphic-designs/JTL.png" },
-    { title: "", image: "/graphic-designs/Luffy.png" },
-    { title: "", image: "/graphic-designs/Santa.png" },
-    { title: "", image: "/graphic-designs/HO-signage.png" },
+    { title: "", image: "/graphic-designs/Illustrator/HO.png" },
+    { title: "", image: "/graphic-designs/Illustrator/NAVIS.png" },
+    { title: "", image: "/graphic-designs/Illustrator/YV.png" },
+    { title: "", image: "/graphic-designs/Illustrator/bubble-bliss.png" },
+    { title: "", image: "/graphic-designs/Illustrator/JTL.png" },
+    { title: "", image: "/graphic-designs/Illustrator/Luffy.png" },
+    { title: "", image: "/graphic-designs/Illustrator/Santa.png" },
+    { title: "", image: "/graphic-designs/Illustrator/HO-signage.png" },
   ],
 
   videos: [
@@ -212,12 +213,12 @@ export default function ProjectPage() {
             absolute
             -right-40
             -top-40
-            h-[500px]
-            w-[500px]
+            h-125
+            w-125
             rounded-full
-            bg-black/[0.025]
+            bg-black/2.5
             blur-3xl
-            dark:bg-white/[0.025]
+            dark:bg-white/2.5
           "
         />
 
@@ -226,12 +227,12 @@ export default function ProjectPage() {
             absolute
             -bottom-60
             -left-40
-            h-[500px]
-            w-[500px]
+            h-125
+            w-125
             rounded-full
-            bg-black/[0.02]
+            bg-black/2
             blur-3xl
-            dark:bg-white/[0.02]
+            dark:bg-white/2
           "
         />
 
@@ -240,10 +241,10 @@ export default function ProjectPage() {
             absolute
             inset-0
             opacity-[0.025]
-            [background-image:radial-gradient(#000_0.6px,transparent_0.6px)]
-            [background-size:6px_6px]
+            bg-[radial-gradient(#000_0.6px,transparent_0.6px)]
+            bg-size-[6px_6px]
             dark:opacity-[0.035]
-            dark:[background-image:radial-gradient(#fff_0.6px,transparent_0.6px)]
+            dark:bg-[radial-gradient(#fff_0.6px,transparent_0.6px)]
           "
         />
       </div>
@@ -354,7 +355,7 @@ export default function ProjectPage() {
                 leading-[0.85]
                 tracking-[-0.07em]
                 transition-all
-                duration-[1200ms]
+                duration-1200
                 delay-200
                 ease-[cubic-bezier(0.22,1,0.36,1)]
                 ${
@@ -580,7 +581,7 @@ const ImageCard = memo(function ImageCard({
         rounded-lg
         text-left
         transition-all
-        duration-[1000ms]
+        duration-1000
         ease-[cubic-bezier(0.22,1,0.36,1)]
         ${
           loaded
@@ -627,7 +628,7 @@ const ImageCard = memo(function ImageCard({
             object-contain
             transform-gpu
             transition-transform
-            duration-[1200ms]
+            duration-1200
             ease-[cubic-bezier(0.22,1,0.36,1)]
             group-hover:scale-[1.045]
           "
@@ -746,7 +747,7 @@ const VideoCard = memo(function VideoCard({
         rounded-xl
         text-left
         transition-all
-        duration-[1000ms]
+        duration-1000
         ease-[cubic-bezier(0.22,1,0.36,1)]
         ${
           loaded
@@ -783,7 +784,7 @@ const VideoCard = memo(function VideoCard({
             object-cover
             transform-gpu
             transition-transform
-            duration-[1200ms]
+            duration-1200
             ease-[cubic-bezier(0.22,1,0.36,1)]
             group-hover:scale-[1.04]
           "
@@ -879,7 +880,7 @@ function ImageModal({
       className="
         fixed
         inset-0
-        z-[100]
+        z-100
         flex
         items-center
         justify-center
@@ -979,7 +980,7 @@ function VideoModal({
       className="
         fixed
         inset-0
-        z-[100]
+        z-100
         flex
         items-center
         justify-center

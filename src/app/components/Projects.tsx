@@ -19,15 +19,15 @@ type Category = {
 
 const projects: Record<string, ProjectItem[]> = {
   photoshop: [
-    { title: "", image: "/graphic-designs/SGA.png" },
-    { title: "", image: "/graphic-designs/HOPromo-Poster.png" },
-    { title: "", image: "/graphic-designs/DJGIANC.png" },
+    { title: "", image: "/graphic-designs/Photoshop/SGA.png" },
+    { title: "", image: "/graphic-designs/Photoshop/HOPromo-Poster.png" },
+    { title: "", image: "/graphic-designs/Photoshop/DJGIANC.png" },
   ],
 
   illustrator: [
-    { title: "", image: "/graphic-designs/HO.png" },
-    { title: "", image: "/graphic-designs/Luffy.png" },
-    { title: "", image: "/graphic-designs/Santa.png" },
+    { title: "", image: "/graphic-designs/Illustrator/HO.png" },
+    { title: "", image: "/graphic-designs/Illustrator/Luffy.png" },
+    { title: "", image: "/graphic-designs/Illustrator/Santa.png" },
   ],
 
   videos: [
@@ -125,7 +125,7 @@ function ProjectCard({
         <div className="absolute inset-0 bg-black/0 transition-colors duration-300 group-hover/front:bg-black/25" />
 
         {/* HOVER LABEL */}
-        <div className="absolute inset-x-0 bottom-0 flex translate-y-2 items-center justify-between bg-gradient-to-t from-black/80 via-black/30 to-transparent px-4 pb-4 pt-12 opacity-0 transition-[transform,opacity] duration-300 group-hover/front:translate-y-0 group-hover/front:opacity-100">
+        <div className="absolute inset-x-0 bottom-0 flex translate-y-2 items-center justify-between bg-linear-to-t from-black/80 via-black/30 to-transparent px-4 pb-4 pt-12 opacity-0 transition-[transform,opacity] duration-300 group-hover/front:translate-y-0 group-hover/front:opacity-100">
           <span className="text-[9px] font-medium uppercase tracking-[0.18em] text-white">
             View Collection
           </span>
@@ -164,7 +164,7 @@ function ProjectCard({
         />
       )}
 
-      <div className="absolute inset-0 bg-black/[0.05] dark:bg-black/[0.12]" />
+      <div className="absolute inset-0 bg-black/5 dark:bg-black/12" />
     </div>
   );
 }
@@ -199,7 +199,7 @@ function ProjectStack({
       {/* CATEGORY HEADER                                                     */}
       {/* ------------------------------------------------------------------ */}
 
-      <div className="flex min-h-[82px] items-start justify-between border-b border-white/10 pb-4 dark:border-white/10">
+      <div className="flex min-h-20.5 items-start justify-between border-b border-white/10 pb-4 dark:border-white/10">
         <div className="flex min-w-0 items-start gap-3">
           {/* NUMBER */}
           <span className="mt-0.5 shrink-0 text-[9px] font-medium tracking-[0.18em] text-gray-400 dark:text-gray-500">
@@ -212,7 +212,7 @@ function ProjectStack({
               {category.label}
             </h3>
 
-            <p className="mt-1 max-w-[220px] text-[10px] font-light leading-4 text-gray-400 dark:text-gray-500">
+            <p className="mt-1 max-w-55 text-[10px] font-light leading-4 text-gray-400 dark:text-gray-500">
               {category.description}
             </p>
           </div>
@@ -223,8 +223,8 @@ function ProjectStack({
       {/* STACK                                                               */}
       {/* ------------------------------------------------------------------ */}
 
-      <div className="mt-8 flex h-[300px] w-full items-start justify-center">
-        <div className="group/stack relative h-[270px] w-full max-w-[270px]">
+      <div className="mt-8 flex h-75 w-full items-start justify-center">
+        <div className="group/stack relative h-67.5 w-full max-w-67.5">
           {stackItems.map((project, index) => {
             const isFront = index === 0;
             const positionClasses =
@@ -253,7 +253,7 @@ function ProjectStack({
       {/* FOOTER                                                              */}
       {/* ------------------------------------------------------------------ */}
 
-      <div className="mt-1 flex min-h-[24px] items-center justify-between border-t border-white/10 pt-4 dark:border-white/10">
+      <div className="mt-1 flex min-h-6 items-center justify-between border-t border-white/10 pt-4 dark:border-white/10">
         <span className="text-[9px] font-light uppercase tracking-[0.18em] text-gray-400 dark:text-gray-500">
           Selected Work
         </span>
