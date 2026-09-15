@@ -1,5 +1,8 @@
 "use client";
 
+import Image, {
+  type StaticImageData,
+} from "next/image";
 import {
   memo,
   useCallback,
@@ -15,9 +18,33 @@ import {
   ArrowUpRight,
 } from "lucide-react";
 
+import burgerImage from "../../../../public/graphic-designs/Photoshop/Burger.png";
+import barChowImage from "../../../../public/graphic-designs/Photoshop/Bar-Chow.png";
+import hideoutImage from "../../../../public/graphic-designs/Photoshop/Hideout.png";
+import riceMealsImage from "../../../../public/graphic-designs/Photoshop/Rice-meals.png";
+import drinksImage from "../../../../public/graphic-designs/Photoshop/Drinks.png";
+import hoPromoPosterImage from "../../../../public/graphic-designs/Photoshop/HOPromo-Poster.png";
+import slaughterImage from "../../../../public/graphic-designs/Photoshop/Slaughter.png";
+import djGiancImage from "../../../../public/graphic-designs/Photoshop/DJGIANC.png";
+import sgaImage from "../../../../public/graphic-designs/Photoshop/SGA.png";
+import lalisaImage from "../../../../public/graphic-designs/Photoshop/Lalisa.png";
+import medusaLilithImage from "../../../../public/graphic-designs/Photoshop/MedusaxLilith.png";
+import insecurityImage from "../../../../public/graphic-designs/Photoshop/Insecurity.png";
+import edwardsImage from "../../../../public/graphic-designs/Photoshop/Edwards.png";
+import rentConnectImage from "../../../../public/graphic-designs/Photoshop/RentConnect.jpg";
+
+import hoImage from "../../../../public/graphic-designs/Illustrator/HO.png";
+import navisImage from "../../../../public/graphic-designs/Illustrator/NAVIS.png";
+import yvImage from "../../../../public/graphic-designs/Illustrator/YV.png";
+import bubbleBlissImage from "../../../../public/graphic-designs/Illustrator/bubble-bliss.png";
+import jtlImage from "../../../../public/graphic-designs/Illustrator/JTL.png";
+import luffyImage from "../../../../public/graphic-designs/Illustrator/Luffy.png";
+import santaImage from "../../../../public/graphic-designs/Illustrator/Santa.png";
+import hoSignageImage from "../../../../public/graphic-designs/Illustrator/HO-signage.png";
+
 type ImageProject = {
   title: string;
-  image: string;
+  image: StaticImageData;
 };
 
 type VideoProject = {
@@ -27,31 +54,31 @@ type VideoProject = {
 
 const projects = {
   photoshop: [
-    { title: "", image: "/graphic-designs/Photoshop/Burger.png" },
-    { title: "", image: "/graphic-designs/Photoshop/Bar-Chow.png" },
-    { title: "", image: "/graphic-designs/Photoshop/Hideout.png" },
-    { title: "", image: "/graphic-designs/Photoshop/Rice-meals.png" },
-    { title: "", image: "/graphic-designs/Photoshop/Drinks.png" },
-    { title: "", image: "/graphic-designs/Photoshop/HOPromo-Poster.png" },
-    { title: "", image: "/graphic-designs/Photoshop/Slaughter.png" },
-    { title: "", image: "/graphic-designs/Photoshop/DJGIANC.png" },
-    { title: "", image: "/graphic-designs/Photoshop/SGA.png" },
-    { title: "", image: "/graphic-designs/Photoshop/Lalisa.png" },
-    { title: "", image: "/graphic-designs/Photoshop/MedusaxLilith.png" },
-    { title: "", image: "/graphic-designs/Photoshop/Insecurity.png" },
-    { title: "", image: "/graphic-designs/Photoshop/Edwards.png" },
-    { title: "", image: "/graphic-designs/Photoshop/RentConnect.jpg" },
+    { title: "", image: burgerImage },
+    { title: "", image: barChowImage },
+    { title: "", image: hideoutImage },
+    { title: "", image: riceMealsImage },
+    { title: "", image: drinksImage },
+    { title: "", image: hoPromoPosterImage },
+    { title: "", image: slaughterImage },
+    { title: "", image: djGiancImage },
+    { title: "", image: sgaImage },
+    { title: "", image: lalisaImage },
+    { title: "", image: medusaLilithImage },
+    { title: "", image: insecurityImage },
+    { title: "", image: edwardsImage },
+    { title: "", image: rentConnectImage },
   ],
 
   illustrator: [
-    { title: "", image: "/graphic-designs/Illustrator/HO.png" },
-    { title: "", image: "/graphic-designs/Illustrator/NAVIS.png" },
-    { title: "", image: "/graphic-designs/Illustrator/YV.png" },
-    { title: "", image: "/graphic-designs/Illustrator/bubble-bliss.png" },
-    { title: "", image: "/graphic-designs/Illustrator/JTL.png" },
-    { title: "", image: "/graphic-designs/Illustrator/Luffy.png" },
-    { title: "", image: "/graphic-designs/Illustrator/Santa.png" },
-    { title: "", image: "/graphic-designs/Illustrator/HO-signage.png" },
+    { title: "", image: hoImage },
+    { title: "", image: navisImage },
+    { title: "", image: yvImage },
+    { title: "", image: bubbleBlissImage },
+    { title: "", image: jtlImage },
+    { title: "", image: luffyImage },
+    { title: "", image: santaImage },
+    { title: "", image: hoSignageImage },
   ],
 
   videos: [
@@ -64,6 +91,9 @@ const categoryNames: Record<string, string> = {
   illustrator: "Illustrator",
   videos: "Videos",
 };
+
+const galleryImageSizes =
+  "(min-width: 1024px) 20vw, (min-width: 768px) 25vw, 33vw";
 
 export default function ProjectPage() {
   const params = useParams();
@@ -240,11 +270,11 @@ export default function ProjectPage() {
           className="
             absolute
             inset-0
-            opacity-[0.025]
             bg-[radial-gradient(#000_0.6px,transparent_0.6px)]
             bg-size-[6px_6px]
-            dark:opacity-[0.035]
+            opacity-[0.025]
             dark:bg-[radial-gradient(#fff_0.6px,transparent_0.6px)]
+            dark:opacity-[0.035]
           "
         />
       </div>
@@ -380,10 +410,10 @@ export default function ProjectPage() {
                 font-light
                 leading-relaxed
                 text-neutral-500
-                dark:text-neutral-400
                 transition-all
                 duration-1000
                 delay-500
+                dark:text-neutral-400
                 ${
                   pageLoaded
                     ? "translate-y-0 opacity-100"
@@ -461,7 +491,7 @@ export default function ProjectPage() {
             {(currentProjects as ImageProject[]).map(
               (project, index) => (
                 <ImageCard
-                  key={`${project.image}-${index}`}
+                  key={`${project.image.src}-${index}`}
                   project={project}
                   index={index}
                   loaded={pageLoaded}
@@ -486,13 +516,13 @@ export default function ProjectPage() {
             uppercase
             tracking-[0.25em]
             text-neutral-400
+            transition-all
+            duration-1000
+            delay-700
             dark:border-white/10
             sm:flex-row
             sm:items-center
             sm:justify-between
-            transition-all
-            duration-1000
-            delay-700
             ${
               pageLoaded
                 ? "translate-y-0 opacity-100"
@@ -521,8 +551,8 @@ export default function ProjectPage() {
               className="
                 transition-transform
                 duration-300
-                group-hover:translate-x-0.5
                 group-hover:-translate-y-0.5
+                group-hover:translate-x-0.5
               "
             />
           </Link>
@@ -609,17 +639,16 @@ const ImageCard = memo(function ImageCard({
           dark:shadow-none
         "
       >
-        <img
+        <Image
           src={project.image}
           alt={
             project.title ||
             `${categoryName} visual work`
           }
-          loading={index === 0 ? "eager" : "lazy"}
-          decoding="async"
-          fetchPriority={
-            index === 0 ? "high" : undefined
-          }
+          width={project.image.width}
+          height={project.image.height}
+          sizes={galleryImageSizes}
+          priority={index === 0}
           draggable={false}
           className="
             block
@@ -854,8 +883,8 @@ const VideoCard = memo(function VideoCard({
             className="
               transition-transform
               duration-500
-              group-hover:translate-x-1
               group-hover:-translate-y-1
+              group-hover:translate-x-1
             "
           />
         </div>
@@ -875,6 +904,8 @@ function ImageModal({
   project: ImageProject;
   onClose: () => void;
 }) {
+  const [imageLoaded, setImageLoaded] = useState(false);
+
   return (
     <div
       className="
@@ -924,8 +955,8 @@ function ImageModal({
             shadow-xl
             transition-all
             duration-300
-            hover:scale-110
             hover:rotate-90
+            hover:scale-110
             active:scale-95
           "
         >
@@ -934,20 +965,25 @@ function ImageModal({
 
         <div
           className="
+            relative
             max-h-[94vh]
             max-w-[96vw]
             overflow-hidden
             rounded-lg
           "
         >
-          <img
+          <Image
             src={project.image}
             alt={project.title || "Visual work"}
+            width={project.image.width}
+            height={project.image.height}
+            sizes="96vw"
+            quality={90}
             loading="eager"
-            decoding="async"
             fetchPriority="high"
+            onLoad={() => setImageLoaded(true)}
             draggable={false}
-            className="
+            className={`
               block
               h-auto
               max-h-[94vh]
@@ -956,8 +992,44 @@ function ImageModal({
               rounded-lg
               object-contain
               shadow-2xl
-            "
+              transition-opacity
+              duration-300
+              ${
+                imageLoaded
+                  ? "opacity-100"
+                  : "opacity-0"
+              }
+            `}
           />
+
+          {!imageLoaded && (
+            <div
+              className="
+                absolute
+                inset-0
+                flex
+                min-h-32
+                min-w-32
+                items-center
+                justify-center
+                bg-black/10
+              "
+              aria-label="Loading image"
+              role="status"
+            >
+              <span
+                className="
+                  h-8
+                  w-8
+                  animate-spin
+                  rounded-full
+                  border
+                  border-white/25
+                  border-t-white
+                "
+              />
+            </div>
+          )}
         </div>
       </div>
     </div>
@@ -1026,8 +1098,8 @@ function VideoModal({
             shadow-xl
             transition-all
             duration-300
-            hover:scale-110
             hover:rotate-90
+            hover:scale-110
             active:scale-95
           "
         >
